@@ -3,7 +3,7 @@ using Backend.Dtos;
 
 namespace Backend.Services;
 
-public class EnhanzerApiClient(HttpClient http, IConfiguration config)
+public class EnhanzerApiClient(HttpClient http, IConfiguration config, ILogger<EnhanzerApiClient> logger)
 {
     public async Task<List<LocationDto>?> LoginAsync(string email, string password)
     {
@@ -17,11 +17,19 @@ public class EnhanzerApiClient(HttpClient http, IConfiguration config)
         };
 
         var response = await http.PostAsJsonAsync(config["EnhanzerApi:Url"], body);
-        if (!response.IsSuccessStatusCode) return null;
+        var content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            logger.LogWarning("Enhanzer login failed with {Status}: {Body}", response.StatusCode, content);
+            return null;
+        }
 
-        var json = JsonNode.Parse(await response.Content.ReadAsStringAsync());
-        var locations = FindArray(json, "User_Locations");
-        if (locations is null) return null;
+        var locations = FindArray(JsonNode.Parse(content), "User_Locations");
+        if (locations is null)
+        {
+            logger.LogWarning("Enhanzer login returned no User_Locations: {Body}", content);
+            return null;
+        }
 
         return locations
             .Where(l => l is not null)
