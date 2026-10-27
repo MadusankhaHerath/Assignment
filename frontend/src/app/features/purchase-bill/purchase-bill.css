@@ -1,0 +1,90 @@
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  color: #fff;
+  background: linear-gradient(90deg, #3a8de0, #2a5db0);
+}
+
+h1 { margin: 0; font-size: 16px; }
+.topbar p { margin: 0; font-size: 11px; opacity: 0.85; }
+
+.actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.user { font-size: 12px; opacity: 0.9; margin-right: 4px; }
+
+.actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  color: #fff;
+  border-radius: 14px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+
+.actions button:disabled { opacity: 0.6; cursor: default; }
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 16px;
+  padding: 16px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  min-width: 0;
+}
+
+.item-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.field { display: flex; flex-direction: column; }
+label { font-size: 11px; color: #666; margin-bottom: 4px; }
+
+input, select {
+  border: none;
+  border-bottom: 1px solid #aaa;
+  padding: 6px 2px;
+  font-size: 13px;
+  background: transparent;
+  outline: none;
+}
+
+input[type="number"] { text-align: right; }
+input:focus, select:focus { border-bottom-color: #2a5db0; }
+.readonly { background: #eee; text-align: right; }
+.ng-invalid.ng-touched { border-bottom-color: #d32f2f; }
+small { color: #d32f2f; font-size: 11px; margin-top: 2px; }
+
+.add { justify-content: flex-end; }
+
+.add-btn {
+  align-self: flex-start;
+  background: #2e9e4f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.alert { padding: 8px 10px; border-radius: 4px; font-size: 13px; margin-bottom: 12px; }
+.error { background: #fdecea; color: #b71c1c; }
+.success { background: #e8f5e9; color: #1b5e20; }
+
+@media (max-width: 900px) {
+  .content { grid-template-columns: 1fr; }
+}

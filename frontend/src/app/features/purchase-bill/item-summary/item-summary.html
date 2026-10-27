@@ -1,0 +1,12 @@
+<h2>Summary</h2>
+
+<h3>Item Summary</h3>
+<div class="row"><span>Total Items</span><span>{{ totalItems() }}</span></div>
+<div class="row"><span>Total Qty</span><span>{{ totalQty() }}</span></div>
+
+<h3>Financial Summary</h3>
+<div class="row"><span>Total Cost</span><span>{{ totalCost() | number: '1.2-2' }}</span></div>
+<div class="row"><span>Total Selling</span><span>{{ totalSelling() | number: '1.2-2' }}</span></div>
+
+<h3>Net Total</h3>
+<div class="net">Rs. {{ totalCost() | number: '1.2-2' }}</div>

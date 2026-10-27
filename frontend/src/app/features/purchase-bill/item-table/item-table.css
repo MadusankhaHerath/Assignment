@@ -1,0 +1,15 @@
+.table-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 12px; white-space: nowrap; }
+th { color: #2a5db0; font-weight: 500; text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+td { padding: 8px; border-bottom: 1px solid #eee; }
+.num { text-align: right; }
+.empty { text-align: center; color: #999; padding: 20px; }
+
+button {
+  border: none;
+  background: none;
+  color: #d32f2f;
+  font-size: 16px;
+  cursor: pointer;
+}

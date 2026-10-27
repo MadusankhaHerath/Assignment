@@ -1,0 +1,106 @@
+<div class="page">
+  <header class="topbar">
+    <div>
+      <h1>Purchase Bill</h1>
+      <p>Enter information for the Purchase Bill</p>
+    </div>
+    <div class="actions">
+      <span class="user">{{ email() }}</span>
+      <button type="button" (click)="reset()" [disabled]="saving()">Reset</button>
+      <button type="button" (click)="save()" [disabled]="saving()">
+        @if (saving()) { <app-loading-spinner [size]="14" /> } Save
+      </button>
+      <button type="button" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="card">
+      <form class="item-form" [formGroup]="form" (ngSubmit)="addItem()" novalidate>
+        <div class="field">
+          <label for="item">Item*</label>
+          <input id="item" formControlName="item" list="item-options" autocomplete="off" />
+          <datalist id="item-options">
+            @for (option of itemOptions; track option) { <option [value]="option"></option> }
+          </datalist>
+          @if (invalid('item')) {
+            <small>{{ form.controls.item.hasError('required') ? 'Item is required.' : 'Select an item from the list.' }}</small>
+          }
+        </div>
+
+        <div class="field">
+          <label for="batch">Batch*</label>
+          <select id="batch" formControlName="batch">
+            <option value="" disabled>{{ loadingLocations() ? 'Loading...' : 'Select batch' }}</option>
+            @for (loc of locations(); track loc.locationCode) {
+              <option [value]="loc.locationName">{{ loc.locationName }}</option>
+            }
+          </select>
+          @if (invalid('batch')) { <small>Batch is required.</small> }
+        </div>
+
+        <div class="field">
+          <label for="standardCost">Standard Cost*</label>
+          <input id="standardCost" type="number" min="0" formControlName="standardCost" placeholder="0.00" />
+          @if (invalid('standardCost')) { <small>Enter a valid cost.</small> }
+        </div>
+
+        <div class="field">
+          <label for="standardPrice">Standard Price*</label>
+          <input id="standardPrice" type="number" min="0" formControlName="standardPrice" placeholder="0.00" />
+          @if (invalid('standardPrice')) { <small>Enter a valid price.</small> }
+        </div>
+
+        <div class="field">
+          <label>Margin</label>
+          <input class="readonly" [value]="margin() | number: '1.2-2'" readonly tabindex="-1" />
+        </div>
+
+        <div class="field">
+          <label for="qty">Qty*</label>
+          <input id="qty" type="number" min="0" formControlName="qty" />
+          @if (invalid('qty')) { <small>Qty must be greater than 0.</small> }
+        </div>
+
+        <div class="field">
+          <label for="freeQty">Free Qty</label>
+          <input id="freeQty" type="number" min="0" formControlName="freeQty" />
+          @if (invalid('freeQty')) { <small>Cannot be negative.</small> }
+        </div>
+
+        <div class="field">
+          <label for="discount">Discount %</label>
+          <input id="discount" type="number" min="0" max="100" formControlName="discount" />
+          @if (invalid('discount')) { <small>Must be 0 - 100.</small> }
+        </div>
+
+        <div class="field">
+          <label>Total Cost</label>
+          <input class="readonly" [value]="totalCost() | number: '1.2-2'" readonly tabindex="-1" />
+        </div>
+
+        <div class="field">
+          <label>Total Selling</label>
+          <input class="readonly" [value]="totalSelling() | number: '1.2-2'" readonly tabindex="-1" />
+        </div>
+
+        <div class="field add">
+          <button type="submit" class="add-btn">Add +</button>
+        </div>
+      </form>
+
+      @if (error()) { <div class="alert error">{{ error() }}</div> }
+      @if (success()) { <div class="alert success">{{ success() }}</div> }
+
+      <app-item-table [items]="items()" (remove)="removeItem($event)" />
+    </section>
+
+    <aside class="card summary">
+      <app-item-summary
+        [totalItems]="items().length"
+        [totalQty]="billTotalQty()"
+        [totalCost]="billTotalCost()"
+        [totalSelling]="billTotalSelling()" />
+    </aside>
+  </main>
+</div>
